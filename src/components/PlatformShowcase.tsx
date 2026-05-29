@@ -331,8 +331,8 @@ function CasosPanel({ t }: { t: CopyT }) {
         </h3>
         <span className="text-xs text-muted">{t.casos.count}</span>
       </div>
-      <div className="overflow-hidden rounded-xl border border-line">
-        <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto rounded-xl border border-line">
+        <table className="w-full min-w-[20rem] text-left text-sm">
           <thead>
             <tr className="border-b border-line bg-bg-soft text-[0.7rem] uppercase tracking-wider text-muted">
               <th className="px-3 py-2 font-semibold">{t.casos.thId}</th>
@@ -630,7 +630,7 @@ export default function PlatformShowcase() {
           className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16"
         >
           {/* Columna intro */}
-          <div>
+          <div className="min-w-0">
             <motion.p variants={fadeUp} className="eyebrow mb-4">
               {t.eyebrow}
             </motion.p>
@@ -662,7 +662,7 @@ export default function PlatformShowcase() {
           </div>
 
           {/* Columna mockup */}
-          <motion.div variants={fadeUp}>
+          <motion.div variants={fadeUp} className="min-w-0">
             <div className="card elev-1 overflow-hidden !rounded-2xl">
               {/* Barra de ventana */}
               <div className="flex items-center gap-2 border-b border-line bg-bg-soft px-4 py-3">
@@ -744,7 +744,7 @@ export default function PlatformShowcase() {
                 </nav>
 
                 {/* Área principal */}
-                <div className="min-h-[360px] p-4 sm:p-5">
+                <div className="min-w-0 min-h-[360px] p-4 sm:p-5">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={tab}

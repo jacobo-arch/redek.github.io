@@ -9,12 +9,12 @@ import ScrollProgress from "./ScrollProgress";
 import { useCopy } from "@/i18n/locale";
 
 const navLinks = [
-  { es: "Nosotros", en: "About", href: "#nosotros", id: "nosotros" },
-  { es: "Cómo funciona", en: "How it works", href: "#como-funciona", id: "como-funciona" },
-  { es: "Plataforma", en: "Platform", href: "#plataforma", id: "plataforma" },
-  { es: "Soluciones", en: "Solutions", href: "#soluciones", id: "soluciones" },
-  { es: "Equipo", en: "Team", href: "#equipo", id: "equipo" },
-  { es: "Contacto", en: "Contact", href: "#contacto", id: "contacto" },
+  { es: "Nosotros", en: "About", href: "/#nosotros", id: "nosotros" },
+  { es: "Cómo funciona", en: "How it works", href: "/#como-funciona", id: "como-funciona" },
+  { es: "Plataforma", en: "Platform", href: "/#plataforma", id: "plataforma" },
+  { es: "Soluciones", en: "Solutions", href: "/#soluciones", id: "soluciones" },
+  { es: "Equipo", en: "Team", href: "/#equipo", id: "equipo" },
+  { es: "Contacto", en: "Contact", href: "/#contacto", id: "contacto" },
 ];
 
 const COPY = {
@@ -67,7 +67,7 @@ export default function Navbar() {
     >
       <ScrollProgress />
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#" className="flex items-center gap-2.5">
+        <a href="/" className="flex items-center gap-2.5">
           <Image
             src="/redek-logo.png"
             alt="REDEK"
@@ -103,7 +103,7 @@ export default function Navbar() {
           ))}
           <LanguageToggle />
           <ThemeToggle />
-          <a href="#contacto" className="btn-primary !px-5 !py-2 !text-sm">
+          <a href="/#contacto" className="btn-primary !px-5 !py-2 !text-sm">
             {t.cta}
           </a>
         </div>
@@ -153,7 +153,7 @@ export default function Navbar() {
                 </a>
               ))}
               <a
-                href="#contacto"
+                href="/#contacto"
                 onClick={() => setMobileOpen(false)}
                 className="btn-primary mt-2 justify-center"
               >

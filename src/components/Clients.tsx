@@ -83,12 +83,12 @@ export default function Clients() {
               aria-hidden={i >= clients.length}
               className="group flex flex-shrink-0 items-center gap-3 px-8"
             >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line text-muted/70 transition-colors duration-300 group-hover:border-brand/50 group-hover:text-brand">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line text-muted transition-colors duration-300 group-hover:border-brand/50 group-hover:text-brand">
                 <span className="numeral text-xs font-bold tracking-tight">
                   {initials(name)}
                 </span>
               </span>
-              <span className="select-none whitespace-nowrap font-display text-base font-semibold tracking-tight text-muted/55 transition-colors duration-300 group-hover:text-text">
+              <span className="select-none whitespace-nowrap font-display text-base font-semibold tracking-tight text-muted transition-colors duration-300 group-hover:text-text">
                 {name}
               </span>
             </div>

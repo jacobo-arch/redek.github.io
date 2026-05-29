@@ -44,11 +44,12 @@ const container = {
   visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
 };
 
+// LCP-safe: el above-the-fold NO se oculta con opacity (evita h1 invisible
+// hasta hidratar). Solo desliza en Y; el texto pinta en SSR de inmediato.
 const fadeUp = {
-  hidden: { y: 18, opacity: 0 },
+  hidden: { y: 16 },
   visible: {
     y: 0,
-    opacity: 1,
     transition: { duration: 0.7, ease: EASE_OUT_EXPO },
   },
 };
@@ -150,12 +151,16 @@ export default function Hero() {
         transition={{ delay: 1.6, duration: 1 }}
         className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
       >
-        <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted/70">
+        <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted/80">
           {t.scroll}
         </span>
         <motion.span
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" as const }}
+          animate={reduce ? undefined : { y: [0, 6, 0] }}
+          transition={
+            reduce
+              ? undefined
+              : { repeat: Infinity, duration: 1.8, ease: "easeInOut" as const }
+          }
           className="h-6 w-px bg-gradient-to-b from-muted/50 to-transparent"
         />
       </motion.div>
