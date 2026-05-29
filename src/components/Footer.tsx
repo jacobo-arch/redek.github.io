@@ -1,20 +1,68 @@
 "use client";
 
 import Image from "next/image";
+import { useCopy } from "@/i18n/locale";
 
-const navLinks = [
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Soluciones", href: "#soluciones" },
-  { label: "Equipo", href: "#equipo" },
-  { label: "Contacto", href: "#contacto" },
-];
+type NavLink = { label: string; href: string };
 
-const legalLinks = [
-  { label: "Política de Privacidad", href: "#" },
-  { label: "Términos de Uso", href: "#" },
-];
+type FooterCopy = {
+  tagline: string;
+  linkedin: string;
+  navHeading: string;
+  legalHeading: string;
+  contactHeading: string;
+  navLinks: NavLink[];
+  legalLinks: NavLink[];
+  rights: string;
+  descriptor: string;
+};
+
+const COPY: { es: FooterCopy; en: FooterCopy } = {
+  es: {
+    tagline:
+      "Tecnología de resolución de disputas para organizaciones que exigen eficiencia sin sacrificar criterio.",
+    linkedin: "LinkedIn",
+    navHeading: "Navegación",
+    legalHeading: "Legal",
+    contactHeading: "Contacto",
+    navLinks: [
+      { label: "Nosotros", href: "#nosotros" },
+      { label: "Soluciones", href: "#soluciones" },
+      { label: "Equipo", href: "#equipo" },
+      { label: "Contacto", href: "#contacto" },
+    ],
+    legalLinks: [
+      { label: "Política de Privacidad", href: "#" },
+      { label: "Términos de Uso", href: "#" },
+    ],
+    rights: "Todos los derechos reservados.",
+    descriptor: "Soluciones Tecnológicas para Resolución de Disputas",
+  },
+  en: {
+    tagline:
+      "Dispute resolution technology for organizations that demand efficiency without sacrificing judgment.",
+    linkedin: "LinkedIn",
+    navHeading: "Navigation",
+    legalHeading: "Legal",
+    contactHeading: "Contact",
+    navLinks: [
+      { label: "About", href: "#nosotros" },
+      { label: "Solutions", href: "#soluciones" },
+      { label: "Team", href: "#equipo" },
+      { label: "Contact", href: "#contacto" },
+    ],
+    legalLinks: [
+      { label: "Privacy Policy", href: "#" },
+      { label: "Terms of Use", href: "#" },
+    ],
+    rights: "All rights reserved.",
+    descriptor: "Online Dispute Resolution Technology",
+  },
+};
 
 export default function Footer() {
+  const t = useCopy(COPY);
+
   return (
     <footer className="bg-ink text-white py-16">
       <div className="max-w-6xl mx-auto px-6">
@@ -34,8 +82,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-white/60 max-w-xs leading-relaxed">
-              Tecnología de resolución de disputas para organizaciones que
-              exigen eficiencia sin sacrificar criterio.
+              {t.tagline}
             </p>
             {/* LinkedIn */}
             <a
@@ -52,15 +99,15 @@ export default function Footer() {
               >
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
-              LinkedIn
+              {t.linkedin}
             </a>
           </div>
 
           {/* Navigation */}
           <div>
-            <h4 className="eyebrow !text-accent mb-4">Navegación</h4>
+            <h4 className="eyebrow !text-accent mb-4">{t.navHeading}</h4>
             <div className="flex flex-col gap-2.5">
-              {navLinks.map((l) => (
+              {t.navLinks.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
@@ -74,9 +121,9 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="eyebrow !text-accent mb-4">Legal</h4>
+            <h4 className="eyebrow !text-accent mb-4">{t.legalHeading}</h4>
             <div className="flex flex-col gap-2.5">
-              {legalLinks.map((l) => (
+              {t.legalLinks.map((l) => (
                 <a
                   key={l.label}
                   href={l.href}
@@ -90,7 +137,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="eyebrow !text-accent mb-4">Contacto</h4>
+            <h4 className="eyebrow !text-accent mb-4">{t.contactHeading}</h4>
             <div className="flex flex-col gap-2.5">
               <a
                 href="mailto:info@redek.co"
@@ -113,11 +160,9 @@ export default function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-white/50">
-            &copy; {new Date().getFullYear()} REDEK. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} REDEK. {t.rights}
           </p>
-          <p className="text-xs text-white/50">
-            Soluciones Tecnológicas para Resolución de Disputas
-          </p>
+          <p className="text-xs text-white/50">{t.descriptor}</p>
         </div>
       </div>
     </footer>

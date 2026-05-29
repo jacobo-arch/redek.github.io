@@ -1,24 +1,47 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
-const clients = [
-  "Ministerio de Justicia",
-  "Cámara de Comercio",
-  "Superintendencia de Sociedades",
-  "Corte de Arbitraje",
-  "Banco de Desarrollo",
-  "Fiscalía General",
-  "Defensoría del Pueblo",
-  "Procuraduría Nacional",
-];
+type ClientsCopy = {
+  eyebrow: string;
+  clients: string[];
+};
 
-const fadeUp = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" as const } },
+const COPY: { es: ClientsCopy; en: ClientsCopy } = {
+  es: {
+    eyebrow: "Organizaciones que confían en nosotros",
+    clients: [
+      "Ministerio de Justicia",
+      "Cámara de Comercio",
+      "Superintendencia de Sociedades",
+      "Corte de Arbitraje",
+      "Banco de Desarrollo",
+      "Fiscalía General",
+      "Defensoría del Pueblo",
+      "Procuraduría Nacional",
+    ],
+  },
+  en: {
+    eyebrow: "Organizations that trust us",
+    clients: [
+      "Ministry of Justice",
+      "Chamber of Commerce",
+      "Superintendency of Companies",
+      "Court of Arbitration",
+      "Development Bank",
+      "Attorney General's Office",
+      "Office of the Public Defender",
+      "National Inspector General",
+    ],
+  },
 };
 
 export default function Clients() {
+  const t = useCopy(COPY);
+  const clients = t.clients;
+
   return (
     <section id="confianza" className="divide-section py-16 bg-bg overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
@@ -29,7 +52,7 @@ export default function Clients() {
           variants={fadeUp}
           className="eyebrow text-center mb-12"
         >
-          Organizaciones que confían en nosotros
+          {t.eyebrow}
         </motion.p>
       </div>
 

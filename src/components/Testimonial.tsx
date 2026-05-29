@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { EASE_OUT_EXPO } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
 type Testimonial = {
   quote: React.ReactNode;
@@ -9,53 +11,120 @@ type Testimonial = {
   role: string;
 };
 
-const TESTIMONIALS: Testimonial[] = [
-  {
-    quote: (
-      <>
-        REDEK transformó completamente nuestra operación de resolución de
-        conflictos. Lo que antes tomaba 18 meses en tribunales, ahora se resuelve
-        en <span className="text-brand">semanas con total trazabilidad</span>.
-      </>
-    ),
-    name: "Dra. Carolina Vélez",
-    role: "Directora Jurídica — Cámara de Comercio de Medellín",
+const COPY = {
+  es: {
+    eyebrow: "Testimonios",
+    carouselLabel: "Testimonios de clientes",
+    prevLabel: "Testimonio anterior",
+    nextLabel: "Testimonio siguiente",
+    // función: construye el aria-label de cada dot a partir del índice y el nombre.
+    dotLabel: (n: number, name: string) => `Ir al testimonio ${n}: ${name}`,
+    slideLabel: (n: number, total: number) => `${n} de ${total}`,
+    liveLabel: (n: number, total: number, name: string, role: string) =>
+      `Testimonio ${n} de ${total}: ${name}, ${role}`,
+    items: [
+      {
+        quote: (
+          <>
+            REDEK transformó completamente nuestra operación de resolución de
+            conflictos. Lo que antes tomaba 18 meses en tribunales, ahora se
+            resuelve en{" "}
+            <span className="text-brand">semanas con total trazabilidad</span>.
+          </>
+        ),
+        name: "Dra. Carolina Vélez",
+        role: "Directora Jurídica — Cámara de Comercio de Medellín",
+      },
+      {
+        quote: (
+          <>
+            Migramos nuestras audiencias de conciliación a un entorno digital
+            sin perder rigor probatorio. El expediente electrónico nos dio{" "}
+            <span className="text-brand">trazabilidad de cada actuación</span> y
+            redujo las nulidades por forma.
+          </>
+        ),
+        name: "Dr. Andrés Felipe Restrepo",
+        role: "Coordinador de Métodos Alternativos — Centro de Arbitraje y Conciliación de Bogotá",
+      },
+      {
+        quote: (
+          <>
+            La resolución de disputas en línea dejó de ser un experimento. Hoy
+            atendemos reclamaciones de consumo en toda la región con{" "}
+            <span className="text-brand">
+              acuerdos vinculantes y firma electrónica
+            </span>{" "}
+            en una sola plataforma.
+          </>
+        ),
+        name: "Mariana Quispe Loayza",
+        role: "Gerente de Resolución de Conflictos — Defensoría del Consumidor Financiero LatAm",
+      },
+    ] as Testimonial[],
   },
-  {
-    quote: (
-      <>
-        Migramos nuestras audiencias de conciliación a un entorno digital sin
-        perder rigor probatorio. El expediente electrónico nos dio{" "}
-        <span className="text-brand">trazabilidad de cada actuación</span> y
-        redujo las nulidades por forma.
-      </>
-    ),
-    name: "Dr. Andrés Felipe Restrepo",
-    role: "Coordinador de Métodos Alternativos — Centro de Arbitraje y Conciliación de Bogotá",
+  en: {
+    eyebrow: "Testimonials",
+    carouselLabel: "Customer testimonials",
+    prevLabel: "Previous testimonial",
+    nextLabel: "Next testimonial",
+    dotLabel: (n: number, name: string) => `Go to testimonial ${n}: ${name}`,
+    slideLabel: (n: number, total: number) => `${n} of ${total}`,
+    liveLabel: (n: number, total: number, name: string, role: string) =>
+      `Testimonial ${n} of ${total}: ${name}, ${role}`,
+    items: [
+      {
+        quote: (
+          <>
+            REDEK completely transformed how we run dispute resolution. What used
+            to take 18 months in court is now resolved in{" "}
+            <span className="text-brand">weeks with full auditability</span>.
+          </>
+        ),
+        name: "Dra. Carolina Vélez",
+        role: "Head of Legal — Medellín Chamber of Commerce",
+      },
+      {
+        quote: (
+          <>
+            We moved our conciliation hearings to a digital environment without
+            losing evidentiary rigor. The electronic case file gave us{" "}
+            <span className="text-brand">a traceable record of every action</span>{" "}
+            and cut procedural nullities.
+          </>
+        ),
+        name: "Dr. Andrés Felipe Restrepo",
+        role: "Alternative Dispute Resolution Lead — Bogotá Arbitration and Conciliation Center",
+      },
+      {
+        quote: (
+          <>
+            Online dispute resolution is no longer an experiment. Today we handle
+            consumer claims across the region with{" "}
+            <span className="text-brand">
+              binding settlements and electronic signatures
+            </span>{" "}
+            on a single platform.
+          </>
+        ),
+        name: "Mariana Quispe Loayza",
+        role: "Dispute Resolution Manager — Financial Consumer Ombudsman LatAm",
+      },
+    ] as Testimonial[],
   },
-  {
-    quote: (
-      <>
-        La resolución de disputas en línea dejó de ser un experimento. Hoy
-        atendemos reclamaciones de consumo en toda la región con{" "}
-        <span className="text-brand">acuerdos vinculantes y firma electrónica</span>{" "}
-        en una sola plataforma.
-      </>
-    ),
-    name: "Mariana Quispe Loayza",
-    role: "Gerente de Resolución de Conflictos — Defensoría del Consumidor Financiero LatAm",
-  },
-];
+};
 
 const AUTOPLAY_MS = 6000;
 
 export default function Testimonial() {
+  const t = useCopy(COPY);
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
 
-  const count = TESTIMONIALS.length;
+  const testimonials = t.items;
+  const count = testimonials.length;
 
   const goTo = useCallback(
     (next: number, dir: number) => {
@@ -80,7 +149,7 @@ export default function Testimonial() {
     return () => window.clearInterval(id);
   }, [paused, reduceMotion, goTo]);
 
-  const current = TESTIMONIALS[index];
+  const current = testimonials[index];
 
   const slideVariants = {
     enter: (dir: number) => ({
@@ -101,11 +170,11 @@ export default function Testimonial() {
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
             viewport={{ once: true, margin: "-100px" }}
             className="text-center"
           >
-            <p className="eyebrow mb-6">Testimonios</p>
+            <p className="eyebrow mb-6">{t.eyebrow}</p>
 
             <div
               className="font-display text-6xl md:text-7xl text-brand/20 leading-none mb-2 select-none"
@@ -117,7 +186,7 @@ export default function Testimonial() {
             <div
               role="group"
               aria-roledescription="carrusel"
-              aria-label="Testimonios de clientes"
+              aria-label={t.carouselLabel}
               className="relative"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
@@ -138,12 +207,12 @@ export default function Testimonial() {
                     initial="enter"
                     animate="center"
                     exit="exit"
-                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    transition={{ duration: 0.5, ease: EASE_OUT_EXPO }}
                     className="w-full"
                     aria-roledescription="slide"
-                    aria-label={`${index + 1} de ${count}`}
+                    aria-label={t.slideLabel(index + 1, count)}
                   >
-                    <blockquote className="h-display text-2xl md:text-4xl !leading-[1.15] text-text max-w-3xl mx-auto">
+                    <blockquote className="display-3 !leading-[1.15] text-text max-w-3xl mx-auto">
                       {current.quote}
                     </blockquote>
 
@@ -159,10 +228,11 @@ export default function Testimonial() {
 
               {/* Controls */}
               <div className="mt-12 flex items-center justify-center gap-6">
-                <button
+                <motion.button
                   type="button"
                   onClick={prev}
-                  aria-label="Testimonio anterior"
+                  whileTap={{ scale: 0.97 }}
+                  aria-label={t.prevLabel}
                   className="grid h-10 w-10 place-items-center rounded-full border border-line text-text transition-colors hover:text-brand hover:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 >
                   <svg
@@ -178,17 +248,18 @@ export default function Testimonial() {
                   >
                     <path d="m15 18-6-6 6-6" />
                   </svg>
-                </button>
+                </motion.button>
 
                 {/* Dots */}
                 <div className="flex items-center gap-3">
-                  {TESTIMONIALS.map((t, i) => {
+                  {testimonials.map((item, i) => {
                     const active = i === index;
                     return (
-                      <button
-                        key={t.name}
+                      <motion.button
+                        key={item.name}
                         type="button"
-                        aria-label={`Ir al testimonio ${i + 1}: ${t.name}`}
+                        whileTap={{ scale: 0.97 }}
+                        aria-label={t.dotLabel(i + 1, item.name)}
                         aria-current={active ? "true" : undefined}
                         onClick={() => goTo(i, i > index ? 1 : -1)}
                         className={`h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
@@ -201,10 +272,11 @@ export default function Testimonial() {
                   })}
                 </div>
 
-                <button
+                <motion.button
                   type="button"
                   onClick={next}
-                  aria-label="Testimonio siguiente"
+                  whileTap={{ scale: 0.97 }}
+                  aria-label={t.nextLabel}
                   className="grid h-10 w-10 place-items-center rounded-full border border-line text-text transition-colors hover:text-brand hover:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 >
                   <svg
@@ -220,13 +292,12 @@ export default function Testimonial() {
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
-                </button>
+                </motion.button>
               </div>
 
               {/* Live region for screen readers */}
               <span className="sr-only" aria-live="polite">
-                Testimonio {index + 1} de {count}: {current.name},{" "}
-                {current.role}
+                {t.liveLabel(index + 1, count, current.name, current.role)}
               </span>
             </div>
           </motion.div>

@@ -1,23 +1,66 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE_OUT_EXPO, fadeUp } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
-const team = [
-  { name: "Nicolás Lozada", role: "Chief Executive Officer", initials: "NL" },
-  { name: "Shirlei Plaza", role: "Chief Administration Officer", initials: "SP" },
-  { name: "Jordan Rojas", role: "Project & Automation Manager", initials: "JR" },
-  { name: "James Daly", role: "Business Development Advisor", initials: "JD" },
-  { name: "Oscar Echeverry", role: "Commercial & Processes Manager", initials: "OE" },
-  { name: "Miguel Andrade", role: "Operations Manager", initials: "MA" },
-  { name: "Jacobo Gómez", role: "Head of R&D", initials: "JG" },
-];
+type TeamMember = { name: string; role: string; initials: string };
 
-const fadeUp = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" as const } },
+type TeamCopy = {
+  eyebrow: string;
+  titleLead: string;
+  titleAccent: string;
+  intro: string;
+  team: TeamMember[];
+  joinTitle: string;
+  joinSubtitle: string;
+  joinAria: string;
+};
+
+const COPY: { es: TeamCopy; en: TeamCopy } = {
+  es: {
+    eyebrow: "Nuestro Equipo",
+    titleLead: "Las personas detrás de la",
+    titleAccent: "precisión",
+    intro:
+      "Un equipo multidisciplinario que combina derecho, tecnología y visión de negocio.",
+    team: [
+      { name: "Nicolás Lozada", role: "Chief Executive Officer", initials: "NL" },
+      { name: "Shirlei Plaza", role: "Chief Administration Officer", initials: "SP" },
+      { name: "Jordan Rojas", role: "Project & Automation Manager", initials: "JR" },
+      { name: "James Daly", role: "Business Development Advisor", initials: "JD" },
+      { name: "Oscar Echeverry", role: "Commercial & Processes Manager", initials: "OE" },
+      { name: "Miguel Andrade", role: "Operations Manager", initials: "MA" },
+      { name: "Jacobo Gómez", role: "Head of R&D", initials: "JG" },
+    ],
+    joinTitle: "Únete al equipo",
+    joinSubtitle: "Estamos creciendo",
+    joinAria: "Únete al equipo de REDEK",
+  },
+  en: {
+    eyebrow: "Our Team",
+    titleLead: "The people behind the",
+    titleAccent: "precision",
+    intro:
+      "A multidisciplinary team blending law, technology and business vision.",
+    team: [
+      { name: "Nicolás Lozada", role: "Chief Executive Officer", initials: "NL" },
+      { name: "Shirlei Plaza", role: "Chief Administration Officer", initials: "SP" },
+      { name: "Jordan Rojas", role: "Project & Automation Manager", initials: "JR" },
+      { name: "James Daly", role: "Business Development Advisor", initials: "JD" },
+      { name: "Oscar Echeverry", role: "Commercial & Processes Manager", initials: "OE" },
+      { name: "Miguel Andrade", role: "Operations Manager", initials: "MA" },
+      { name: "Jacobo Gómez", role: "Head of R&D", initials: "JG" },
+    ],
+    joinTitle: "Join the team",
+    joinSubtitle: "We're growing",
+    joinAria: "Join the REDEK team",
+  },
 };
 
 export default function Team() {
+  const t = useCopy(COPY);
+
   return (
     <section id="equipo" className="divide-section bg-bg-soft py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -28,25 +71,21 @@ export default function Team() {
           variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
         >
           <motion.p variants={fadeUp} className="eyebrow mb-4">
-            Nuestro Equipo
+            {t.eyebrow}
           </motion.p>
-          <motion.h2
-            variants={fadeUp}
-            className="h-display max-w-2xl text-4xl md:text-5xl"
-          >
-            Las personas detrás de la{" "}
-            <span className="text-brand">precisión</span>.
+          <motion.h2 variants={fadeUp} className="h-display display-2 max-w-2xl">
+            {t.titleLead}{" "}
+            <span className="text-brand">{t.titleAccent}</span>.
           </motion.h2>
           <motion.p
             variants={fadeUp}
             className="mt-6 max-w-2xl text-lg text-muted"
           >
-            Un equipo multidisciplinario que combina derecho, tecnología y
-            visión de negocio.
+            {t.intro}
           </motion.p>
 
           <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((m) => (
+            {t.team.map((m) => (
               <motion.div
                 key={m.name}
                 variants={fadeUp}
@@ -69,7 +108,10 @@ export default function Team() {
             {/* Join CTA card */}
             <motion.a
               href="#contacto"
+              aria-label={t.joinAria}
               variants={fadeUp}
+              whileTap={{ scale: 0.97 }}
+              transition={{ ease: EASE_OUT_EXPO }}
               className="card group flex items-center gap-4 border-dashed px-5 py-4"
             >
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line transition-colors group-hover:border-brand">
@@ -79,9 +121,9 @@ export default function Team() {
               </div>
               <div className="min-w-0">
                 <h3 className="text-sm font-semibold text-brand">
-                  Únete al equipo
+                  {t.joinTitle}
                 </h3>
-                <p className="text-xs text-muted">Estamos creciendo</p>
+                <p className="text-xs text-muted">{t.joinSubtitle}</p>
               </div>
             </motion.a>
           </div>

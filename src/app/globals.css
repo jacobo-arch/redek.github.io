@@ -22,6 +22,8 @@
   --danger: #d14343;
   --grid: rgba(8, 16, 48, 0.045);
   --card: #ffffff;
+  --font-display: var(--font-geist);
+  --font-body: var(--font-geist);
   color-scheme: light;
 }
 
@@ -59,8 +61,8 @@ html.dark {
   --color-warning: var(--warning);
   --color-danger: var(--danger);
 
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
+  --font-display: var(--font-geist);
+  --font-body: var(--font-geist);
 
   --animate-marquee: marquee 38s linear infinite;
 }
@@ -105,6 +107,41 @@ body {
   letter-spacing: -0.03em;
   line-height: 1.02;
   color: var(--text);
+  text-wrap: balance;
+}
+
+/* ── Escala de display de 3 niveles (Sprint 1) ──────────────────────
+   display-1 = hero · display-2 = secciones ancla · display-3 = apoyo.
+   Una sola fuente de verdad para el tamaño de titular según peso narrativo. */
+.display-1,
+.display-2,
+.display-3 {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.035em;
+  color: var(--text);
+  text-wrap: balance;
+}
+.display-1 {
+  font-size: clamp(2.85rem, 1.7rem + 4.9vw, 4.75rem);
+  line-height: 0.98;
+  font-weight: 800;
+}
+.display-2 {
+  font-size: clamp(2rem, 1.35rem + 2.8vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+.display-3 {
+  font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.125rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* Lead paragraph (intro de sección) — equilibrado, sin viudas */
+.lead {
+  text-wrap: pretty;
 }
 
 /* Subtle background grid (Pinecone-style) */
@@ -163,6 +200,9 @@ body {
   background: color-mix(in srgb, var(--brand) 88%, #000);
   transform: translateY(-1px);
 }
+.btn-primary:active {
+  transform: translateY(0) scale(0.97);
+}
 .btn-secondary {
   display: inline-flex;
   align-items: center;
@@ -181,6 +221,38 @@ body {
   border-color: color-mix(in srgb, var(--brand) 55%, var(--line));
   color: var(--brand);
   transform: translateY(-1px);
+}
+.btn-secondary:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Hero signature — sweep de highlight periódico sobre la palabra-concepto */
+@keyframes brand-sweep {
+  0%,
+  62%,
+  100% {
+    background-size: 0% 100%;
+  }
+  72%,
+  92% {
+    background-size: 100% 100%;
+  }
+}
+.brand-sweep {
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--brand) 16%, transparent),
+    color-mix(in srgb, var(--brand) 16%, transparent)
+  );
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  border-radius: 2px;
+  animation: brand-sweep 7s ease-in-out 2s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-sweep {
+    animation: none;
+  }
 }
 
 /* Focus visibility (a11y) */

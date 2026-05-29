@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, Hanken_Grotesk } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
+import { LocaleProvider } from "@/i18n/locale";
 
-const display = Schibsted_Grotesk({
-  variable: "--font-display",
+// Geist — neo-grotesca limpia (estilo Vercel/Pinecone). Una familia para
+// display y body; exponemos ambas variables apuntando a la misma fuente.
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
-  display: "swap",
-});
-
-const body = Hanken_Grotesk({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -48,13 +44,15 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${display.variable} ${body.variable}`}
+      className={geist.variable}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <LocaleProvider>{children}</LocaleProvider>
+      </body>
     </html>
   );
 }

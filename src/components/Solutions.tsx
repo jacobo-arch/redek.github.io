@@ -1,57 +1,147 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
-const services = [
-  {
-    number: "01",
-    title: "Desarrollo a la Medida",
-    description:
-      "Co-diseñamos, desarrollamos e implementamos plataformas ODR personalizadas que se integran con tu ecosistema tecnológico existente.",
-    result: "Control total sobre la experiencia y los datos",
-    features: ["Co-diseño", "Desarrollo", "Implementación"],
-  },
-  {
-    number: "02",
-    title: "Soluciones Manejadas",
-    description:
-      "Accede a nuestra plataforma mediante suscripción o bajo demanda. Nosotros gestionamos la infraestructura mientras tú resuelves disputas.",
-    result: "Operativo en semanas, no en meses",
-    features: ["Suscripción", "Bajo demanda", "Soporte 24/7"],
-  },
-  {
-    number: "03",
-    title: "Soluciones Licenciadas",
-    description:
-      "Licencia completa de nuestra tecnología para gestión interna con total control y autonomía operativa.",
-    result: "Independencia tecnológica con respaldo experto",
-    features: ["Licenciamiento", "Autonomía", "Personalización"],
-  },
-  {
-    number: "04",
-    title: "Consultorías Especializadas",
-    description:
-      "Proyectos de transformación digital, fintech, digitalización de la justicia y capacitación en LegalTech.",
-    result: "De la estrategia a la implementación medible",
-    features: ["Estrategia", "Capacitación", "Acompañamiento"],
-  },
-];
+type Service = {
+  number: string;
+  title: string;
+  description: string;
+  result: string;
+  features: string[];
+};
 
-const capabilities = [
-  "Negociación directa entre partes",
-  "Mediación digital automatizada",
-  "Arbitraje eficiente",
-  "Interfaz intuitiva",
-  "Seguridad y confidencialidad",
-  "Accesibilidad global",
-];
+type SolutionsCopy = {
+  eyebrow: string;
+  titlePre: string;
+  titleAccent: string;
+  intro: string;
+  services: Service[];
+  capabilities: string[];
+  platformEyebrow: string;
+  platformTitlePre: string;
+  platformTitleAccent: string;
+  platformBody: string;
+  platformCta: string;
+};
 
-const fadeUp = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" as const } },
+const COPY: { es: SolutionsCopy; en: SolutionsCopy } = {
+  es: {
+    eyebrow: "Soluciones",
+    titlePre: "Cuatro modelos. Una misión:",
+    titleAccent: "resolver",
+    intro:
+      "Adaptamos nuestra tecnología a la forma en que tu organización necesita operar. Sin rigidez, sin sobre-ingeniería.",
+    services: [
+      {
+        number: "01",
+        title: "Desarrollo a la Medida",
+        description:
+          "Co-diseñamos, desarrollamos e implementamos plataformas ODR personalizadas que se integran con tu ecosistema tecnológico existente.",
+        result: "Control total sobre la experiencia y los datos",
+        features: ["Co-diseño", "Desarrollo", "Implementación"],
+      },
+      {
+        number: "02",
+        title: "Soluciones Manejadas",
+        description:
+          "Accede a nuestra plataforma mediante suscripción o bajo demanda. Nosotros gestionamos la infraestructura mientras tú resuelves disputas.",
+        result: "Operativo en semanas, no en meses",
+        features: ["Suscripción", "Bajo demanda", "Soporte 24/7"],
+      },
+      {
+        number: "03",
+        title: "Soluciones Licenciadas",
+        description:
+          "Licencia completa de nuestra tecnología para gestión interna con total control y autonomía operativa.",
+        result: "Independencia tecnológica con respaldo experto",
+        features: ["Licenciamiento", "Autonomía", "Personalización"],
+      },
+      {
+        number: "04",
+        title: "Consultorías Especializadas",
+        description:
+          "Proyectos de transformación digital, fintech, digitalización de la justicia y capacitación en LegalTech.",
+        result: "De la estrategia a la implementación medible",
+        features: ["Estrategia", "Capacitación", "Acompañamiento"],
+      },
+    ],
+    capabilities: [
+      "Negociación directa entre partes",
+      "Mediación digital automatizada",
+      "Arbitraje eficiente",
+      "Interfaz intuitiva",
+      "Seguridad y confidencialidad",
+      "Accesibilidad global",
+    ],
+    platformEyebrow: "Plataforma ODR",
+    platformTitlePre: "Resolución de disputas",
+    platformTitleAccent: "sin fronteras.",
+    platformBody:
+      "Resultados rápidos y efectivos. Costos reducidos. Acceso desde cualquier lugar del mundo.",
+    platformCta: "Explorar la plataforma",
+  },
+  en: {
+    eyebrow: "Solutions",
+    titlePre: "Four models. One mission:",
+    titleAccent: "resolve",
+    intro:
+      "We tailor our technology to the way your organization needs to operate. No rigidity, no over-engineering.",
+    services: [
+      {
+        number: "01",
+        title: "Custom Development",
+        description:
+          "We co-design, build, and deploy bespoke ODR platforms that integrate with your existing technology ecosystem.",
+        result: "Full control over the experience and the data",
+        features: ["Co-design", "Development", "Deployment"],
+      },
+      {
+        number: "02",
+        title: "Managed Solutions",
+        description:
+          "Access our platform via subscription or on demand. We run the infrastructure while you resolve disputes.",
+        result: "Live in weeks, not months",
+        features: ["Subscription", "On demand", "24/7 support"],
+      },
+      {
+        number: "03",
+        title: "Licensed Solutions",
+        description:
+          "Full license of our technology for in-house operation with complete control and operational autonomy.",
+        result: "Technological independence with expert backing",
+        features: ["Licensing", "Autonomy", "Customization"],
+      },
+      {
+        number: "04",
+        title: "Specialized Consulting",
+        description:
+          "Digital transformation, fintech, justice digitalization, and LegalTech training projects.",
+        result: "From strategy to measurable implementation",
+        features: ["Strategy", "Training", "Advisory"],
+      },
+    ],
+    capabilities: [
+      "Direct negotiation between parties",
+      "Automated digital mediation",
+      "Efficient arbitration",
+      "Intuitive interface",
+      "Security and confidentiality",
+      "Global accessibility",
+    ],
+    platformEyebrow: "ODR Platform",
+    platformTitlePre: "Dispute resolution",
+    platformTitleAccent: "without borders.",
+    platformBody:
+      "Fast, effective outcomes. Reduced costs. Access from anywhere in the world.",
+    platformCta: "Explore the platform",
+  },
 };
 
 export default function Solutions() {
+  const t = useCopy(COPY);
+
   return (
     <section id="soluciones" className="divide-section py-28 md:py-32 bg-bg">
       <div className="max-w-6xl mx-auto px-6">
@@ -62,29 +152,26 @@ export default function Solutions() {
           variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
         >
           <motion.p variants={fadeUp} className="eyebrow mb-4">
-            Soluciones
+            {t.eyebrow}
           </motion.p>
-          <motion.h2
-            variants={fadeUp}
-            className="h-display text-4xl md:text-5xl max-w-3xl"
-          >
-            Cuatro modelos. Una misión:{" "}
-            <span className="text-brand">resolver</span>.
+          <motion.h2 variants={fadeUp} className="display-2 max-w-3xl">
+            {t.titlePre}{" "}
+            <span className="text-brand">{t.titleAccent}</span>.
           </motion.h2>
           <motion.p
             variants={fadeUp}
             className="mt-6 text-muted text-lg max-w-2xl"
           >
-            Adaptamos nuestra tecnología a la forma en que tu organización
-            necesita operar. Sin rigidez, sin sobre-ingeniería.
+            {t.intro}
           </motion.p>
 
           {/* Service Cards — 2x2 */}
           <div className="grid sm:grid-cols-2 gap-6 mt-16">
-            {services.map((s) => (
+            {t.services.map((s) => (
               <motion.div
                 key={s.number}
                 variants={fadeUp}
+                whileTap={{ scale: 0.97 }}
                 className="card p-8 cursor-pointer group"
               >
                 <span className="numeral text-sm text-brand/60">
@@ -120,27 +207,26 @@ export default function Solutions() {
           >
             <div className="grid md:grid-cols-2 gap-10 items-start">
               <div>
-                <p className="eyebrow !text-accent mb-4">Plataforma ODR</p>
-                <h3 className="h-display text-3xl md:text-4xl text-white">
-                  Resolución de disputas{" "}
-                  <span className="text-accent">sin fronteras.</span>
+                <p className="eyebrow !text-accent mb-4">{t.platformEyebrow}</p>
+                <h3 className="display-3 text-white">
+                  {t.platformTitlePre}{" "}
+                  <span className="text-accent">{t.platformTitleAccent}</span>
                 </h3>
                 <p className="mt-4 text-white/60 leading-relaxed">
-                  Resultados rápidos y efectivos. Costos reducidos. Acceso desde
-                  cualquier lugar del mundo.
+                  {t.platformBody}
                 </p>
                 <a
                   href="#contacto"
                   className="group inline-flex items-center gap-2 mt-6 text-sm font-medium text-accent hover:text-white transition-colors"
                 >
-                  Explorar la plataforma
+                  {t.platformCta}
                   <span className="transition-transform group-hover:translate-x-1">
                     &#8594;
                   </span>
                 </a>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {capabilities.map((c) => (
+                {t.capabilities.map((c) => (
                   <div key={c} className="flex items-center gap-2.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                     <span className="text-sm text-white/80">{c}</span>

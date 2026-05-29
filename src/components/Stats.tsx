@@ -7,17 +7,26 @@ import {
   useInView,
   useReducedMotion,
 } from "framer-motion";
+import { EASE_OUT_EXPO, fadeUp } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
-const stats = [
-  { value: "20+", label: "Años de experiencia combinada" },
-  { value: "50+", label: "Plataformas ODR implementadas" },
-  { value: "12", label: "Países con operaciones activas" },
-  { value: "98%", label: "Tasa de resolución efectiva" },
-];
-
-const fadeUp = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" as const } },
+const COPY = {
+  es: {
+    stats: [
+      { value: "20+", label: "Años de experiencia combinada" },
+      { value: "50+", label: "Plataformas ODR implementadas" },
+      { value: "12", label: "Países con operaciones activas" },
+      { value: "98%", label: "Tasa de resolución efectiva" },
+    ],
+  },
+  en: {
+    stats: [
+      { value: "20+", label: "Years of combined experience" },
+      { value: "50+", label: "ODR platforms deployed" },
+      { value: "12", label: "Countries with active operations" },
+      { value: "98%", label: "Effective resolution rate" },
+    ],
+  },
 };
 
 // Separa un valor como "98%" en prefijo, número y sufijo.
@@ -56,7 +65,7 @@ function StatValue({ value, play }: { value: string; play: boolean }) {
 
     const controls = animate(0, target, {
       duration: 1.4,
-      ease: "easeOut",
+      ease: EASE_OUT_EXPO,
       onUpdate: (latest) => {
         setDisplay(`${prefix}${latest.toFixed(decimals)}${suffix}`);
       },
@@ -72,6 +81,7 @@ function StatValue({ value, play }: { value: string; play: boolean }) {
 }
 
 export default function Stats() {
+  const t = useCopy(COPY);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
 
@@ -85,7 +95,7 @@ export default function Stats() {
           variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           className="grid grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-0"
         >
-          {stats.map((s, i) => (
+          {t.stats.map((s, i) => (
             <motion.div
               key={s.label}
               variants={fadeUp}

@@ -2,6 +2,36 @@
 
 import { motion } from "framer-motion";
 import NodeNetwork from "./NodeNetwork";
+import RotatingWord from "./RotatingWord";
+import { EASE_OUT_EXPO } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
+
+const COPY = {
+  es: {
+    eyebrowPrefix: "ODR para",
+    rotating: ["conciliación", "mediación", "arbitraje", "negociación"],
+    titleA: "Precisión algorítmica.",
+    titleB: "Criterio humano.",
+    body: "Transformamos la complejidad jurídica en resoluciones simples. Tecnología que ordena los datos para que tu equipo decida lo que importa.",
+    ctaPrimary: "Agendar demo privada",
+    ctaSecondary: "Ver soluciones",
+    trust1: "ODR en operación en 12 países",
+    trust2: "98% de resolución efectiva",
+    scroll: "Scroll",
+  },
+  en: {
+    eyebrowPrefix: "ODR for",
+    rotating: ["conciliation", "mediation", "arbitration", "negotiation"],
+    titleA: "Algorithmic precision.",
+    titleB: "Human judgment.",
+    body: "We turn legal complexity into simple resolutions. Technology that organizes the data so your team decides what matters.",
+    ctaPrimary: "Book a private demo",
+    ctaSecondary: "See solutions",
+    trust1: "ODR live in 12 countries",
+    trust2: "98% effective resolution rate",
+    scroll: "Scroll",
+  },
+} as const;
 
 const container = {
   hidden: {},
@@ -13,11 +43,12 @@ const fadeUp = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.7, ease: EASE_OUT_EXPO },
   },
 };
 
 export default function Hero() {
+  const t = useCopy(COPY);
   return (
     <section className="relative min-h-screen overflow-hidden bg-bg">
       {/* Subtle grid backdrop */}
@@ -43,25 +74,23 @@ export default function Hero() {
         >
           <motion.div variants={fadeUp} className="mb-7 flex items-center gap-3">
             <span className="h-px w-8 bg-brand" />
-            <span className="eyebrow">La nueva era de la resolución legal</span>
+            <span className="eyebrow flex gap-[0.4em]">
+              {t.eyebrowPrefix}{" "}
+              <RotatingWord words={[...t.rotating]} className="text-brand" />
+            </span>
           </motion.div>
 
-          <motion.h1
-            variants={fadeUp}
-            className="h-display text-[2.75rem] leading-[1.02] sm:text-6xl lg:text-7xl"
-          >
-            Precisión algorítmica.
+          <motion.h1 variants={fadeUp} className="display-1">
+            {t.titleA}
             <br />
-            <span className="text-brand">Criterio humano.</span>
+            <span className="brand-sweep text-brand">{t.titleB}</span>
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className="mt-7 max-w-lg text-lg leading-relaxed text-muted md:text-xl"
+            className="lead mt-7 max-w-lg text-lg leading-relaxed text-muted md:text-xl"
           >
-            Transformamos la complejidad jurídica en resoluciones simples.
-            Tecnología que ordena los datos para que tu equipo decida lo que
-            importa.
+            {t.body}
           </motion.p>
 
           <motion.div
@@ -69,13 +98,13 @@ export default function Hero() {
             className="mt-10 flex flex-wrap items-center gap-3"
           >
             <a href="#contacto" className="btn-primary group">
-              Agendar demo privada
+              {t.ctaPrimary}
               <span className="transition-transform group-hover:translate-x-0.5">
                 &#8594;
               </span>
             </a>
             <a href="#soluciones" className="btn-secondary">
-              Ver soluciones
+              {t.ctaSecondary}
             </a>
           </motion.div>
 
@@ -85,10 +114,10 @@ export default function Hero() {
           >
             <span className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              ODR en operación en 12 países
+              {t.trust1}
             </span>
             <span className="hidden h-4 w-px bg-line sm:block" />
-            <span className="hidden sm:inline">98% de resolución efectiva</span>
+            <span className="hidden sm:inline">{t.trust2}</span>
           </motion.div>
         </motion.div>
       </div>
@@ -101,7 +130,7 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
       >
         <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted/70">
-          Scroll
+          {t.scroll}
         </span>
         <motion.span
           animate={{ y: [0, 6, 0] }}

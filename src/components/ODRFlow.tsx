@@ -2,15 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-
-const fadeUp = {
-  hidden: { y: 30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.6, ease: "easeOut" as const },
-  },
-};
+import { EASE_OUT_EXPO, EASE_IN_OUT, fadeUp } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
 type Step = {
   number: string;
@@ -20,42 +13,108 @@ type Step = {
   bullets: string[];
 };
 
-const steps: Step[] = [
-  {
-    number: "01",
-    stage: "INGRESO",
-    keyword: "Minutos",
-    description: "Las partes cargan el caso; queda estructurado al instante.",
-    bullets: ["Formulario guiado", "Validación de partes", "Carga de evidencia"],
-  },
-  {
-    number: "02",
-    stage: "GESTIÓN",
-    keyword: "Asistida por IA",
-    description:
-      "Negociación, mediación o arbitraje guiados, con priorización automática.",
-    bullets: [
-      "Sugerencias en tiempo real",
-      "Priorización automática",
-      "Audiencias asíncronas",
+type ODRCopy = {
+  eyebrow: string;
+  headingPre: string;
+  headingAccent: string;
+  lead: string;
+  tablistLabel: string;
+  inThisStage: string;
+  steps: Step[];
+};
+
+const COPY: { es: ODRCopy; en: ODRCopy } = {
+  es: {
+    eyebrow: "Arquitectura del proceso",
+    headingPre: "Cómo resolvemos en",
+    headingAccent: "días, no en meses.",
+    lead: "Un flujo continuo del ingreso al acuerdo: estructuramos el caso, asistimos cada etapa con IA y entregamos una resolución auditable.",
+    tablistLabel: "Etapas del proceso de resolución",
+    inThisStage: "En esta etapa",
+    steps: [
+      {
+        number: "01",
+        stage: "INGRESO",
+        keyword: "Minutos",
+        description: "Las partes cargan el caso; queda estructurado al instante.",
+        bullets: [
+          "Formulario guiado",
+          "Validación de partes",
+          "Carga de evidencia",
+        ],
+      },
+      {
+        number: "02",
+        stage: "GESTIÓN",
+        keyword: "Asistida por IA",
+        description:
+          "Negociación, mediación o arbitraje guiados, con priorización automática.",
+        bullets: [
+          "Sugerencias en tiempo real",
+          "Priorización automática",
+          "Audiencias asíncronas",
+        ],
+      },
+      {
+        number: "03",
+        stage: "RESOLUCIÓN",
+        keyword: "Trazable",
+        description: "Acuerdo con evidencia completa y auditable, en días.",
+        bullets: [
+          "Acuerdo vinculante",
+          "Bitácora auditable",
+          "Cierre con evidencia",
+        ],
+      },
     ],
   },
-  {
-    number: "03",
-    stage: "RESOLUCIÓN",
-    keyword: "Trazable",
-    description: "Acuerdo con evidencia completa y auditable, en días.",
-    bullets: [
-      "Acuerdo vinculante",
-      "Bitácora auditable",
-      "Cierre con evidencia",
+  en: {
+    eyebrow: "Process architecture",
+    headingPre: "How we resolve in",
+    headingAccent: "days, not months.",
+    lead: "A continuous flow from intake to settlement: we structure the case, assist every stage with AI and deliver an auditable resolution.",
+    tablistLabel: "Resolution process stages",
+    inThisStage: "In this stage",
+    steps: [
+      {
+        number: "01",
+        stage: "INTAKE",
+        keyword: "Minutes",
+        description: "The parties file the case; it is structured instantly.",
+        bullets: ["Guided intake form", "Party verification", "Evidence upload"],
+      },
+      {
+        number: "02",
+        stage: "RESOLUTION",
+        keyword: "AI-assisted",
+        description:
+          "Guided negotiation, mediation or arbitration, with automatic prioritization.",
+        bullets: [
+          "Real-time suggestions",
+          "Automatic prioritization",
+          "Asynchronous hearings",
+        ],
+      },
+      {
+        number: "03",
+        stage: "SETTLEMENT",
+        keyword: "Traceable",
+        description: "A settlement with complete, auditable evidence, in days.",
+        bullets: [
+          "Binding agreement",
+          "Auditable log",
+          "Close-out with evidence",
+        ],
+      },
     ],
   },
-];
+};
 
 const AUTO_ADVANCE_MS = 3500;
 
 export default function ODRFlow() {
+  const t = useCopy(COPY);
+  const steps = t.steps;
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduceMotion = useReducedMotion();
@@ -68,11 +127,14 @@ export default function ODRFlow() {
       setActive((prev) => (prev + 1) % steps.length);
     }, AUTO_ADVANCE_MS);
     return () => window.clearInterval(id);
-  }, [paused, reduceMotion]);
+  }, [paused, reduceMotion, steps.length]);
 
-  const select = useCallback((i: number) => {
-    setActive(((i % steps.length) + steps.length) % steps.length);
-  }, []);
+  const select = useCallback(
+    (i: number) => {
+      setActive(((i % steps.length) + steps.length) % steps.length);
+    },
+    [steps.length]
+  );
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -87,7 +149,7 @@ export default function ODRFlow() {
       setActive(idx);
       tabRefs.current[idx]?.focus();
     },
-    [active]
+    [active, steps.length]
   );
 
   // Progress fraction across the track (center of step 0 -> center of last step)
@@ -105,21 +167,17 @@ export default function ODRFlow() {
         >
           {/* Header */}
           <motion.p variants={fadeUp} className="eyebrow">
-            Arquitectura del proceso
+            {t.eyebrow}
           </motion.p>
-          <motion.h2
-            variants={fadeUp}
-            className="h-display mt-4 max-w-3xl text-4xl md:text-5xl"
-          >
-            Cómo resolvemos en{" "}
-            <span className="text-brand">días, no en meses.</span>
+          <motion.h2 variants={fadeUp} className="display-2 mt-4 max-w-3xl">
+            {t.headingPre}{" "}
+            <span className="text-brand">{t.headingAccent}</span>
           </motion.h2>
           <motion.p
             variants={fadeUp}
             className="mt-6 max-w-2xl text-lg text-muted"
           >
-            Un flujo continuo del ingreso al acuerdo: estructuramos el caso,
-            asistimos cada etapa con IA y entregamos una resolución auditable.
+            {t.lead}
           </motion.p>
 
           {/* Interactive stepper */}
@@ -134,7 +192,7 @@ export default function ODRFlow() {
             {/* Track + nodes */}
             <div
               role="tablist"
-              aria-label="Etapas del proceso de resolución"
+              aria-label={t.tablistLabel}
               aria-orientation="horizontal"
               onKeyDown={onKeyDown}
               className="relative grid grid-cols-1 gap-y-3 md:grid-cols-3 md:gap-y-0"
@@ -152,7 +210,7 @@ export default function ODRFlow() {
                     transition={
                       reduceMotion
                         ? { duration: 0 }
-                        : { duration: 0.5, ease: "easeInOut" }
+                        : { duration: 0.5, ease: EASE_IN_OUT }
                     }
                   />
                 </div>
@@ -171,7 +229,7 @@ export default function ODRFlow() {
                     transition={
                       reduceMotion
                         ? { duration: 0 }
-                        : { duration: 0.5, ease: "easeInOut" }
+                        : { duration: 0.5, ease: EASE_IN_OUT }
                     }
                   />
                 </div>
@@ -181,7 +239,7 @@ export default function ODRFlow() {
                 const isActive = i === active;
                 const isDone = i < active;
                 return (
-                  <button
+                  <motion.button
                     key={step.number}
                     ref={(el) => {
                       tabRefs.current[i] = el;
@@ -192,6 +250,7 @@ export default function ODRFlow() {
                     aria-selected={isActive}
                     aria-controls="odr-panel"
                     tabIndex={isActive ? 0 : -1}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => select(i)}
                     className="group relative z-10 flex items-center gap-4 rounded-xl px-2 py-3 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg md:flex-col md:items-start md:gap-5 md:px-0"
                   >
@@ -205,7 +264,7 @@ export default function ODRFlow() {
                             initial={{ opacity: 0, scale: 0.4 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.4 }}
-                            transition={{ duration: 0.35, ease: "easeOut" }}
+                            transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
                             className="absolute inset-0 rounded-full bg-brand/15"
                           />
                         )}
@@ -218,7 +277,7 @@ export default function ODRFlow() {
                           transition={{
                             duration: 1.8,
                             repeat: Infinity,
-                            ease: "easeOut",
+                            ease: EASE_OUT_EXPO,
                           }}
                         />
                       )}
@@ -274,7 +333,7 @@ export default function ODRFlow() {
                         {step.keyword}
                       </span>
                     </span>
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -294,7 +353,7 @@ export default function ODRFlow() {
                   }
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  transition={{ duration: 0.4, ease: EASE_OUT_EXPO }}
                   className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12"
                 >
                   {/* Left: index + keyword */}
@@ -307,7 +366,7 @@ export default function ODRFlow() {
                         {current.stage}
                       </span>
                     </div>
-                    <p className="h-display mt-6 text-4xl text-brand md:text-5xl">
+                    <p className="display-3 mt-6 text-brand">
                       {current.keyword}
                     </p>
                     <p className="mt-5 max-w-md text-base leading-relaxed text-muted">
@@ -317,7 +376,7 @@ export default function ODRFlow() {
 
                   {/* Right: micro-bullets */}
                   <div className="md:col-span-7 md:border-l md:border-line md:pl-12">
-                    <p className="eyebrow">En esta etapa</p>
+                    <p className="eyebrow">{t.inThisStage}</p>
                     <ul className="mt-6 flex flex-col gap-px overflow-hidden rounded-xl border border-line">
                       {current.bullets.map((bullet, bi) => (
                         <motion.li
@@ -331,7 +390,7 @@ export default function ODRFlow() {
                           transition={{
                             duration: 0.35,
                             delay: reduceMotion ? 0 : 0.12 + bi * 0.08,
-                            ease: "easeOut",
+                            ease: EASE_OUT_EXPO,
                           }}
                           className="flex items-center gap-4 bg-bg-soft px-5 py-4"
                         >

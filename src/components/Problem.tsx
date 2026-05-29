@@ -1,31 +1,85 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { EASE_OUT_EXPO } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
-const pains = [
-  {
-    figure: "18 meses",
-    label: "Tiempo promedio de un litigio comercial en tribunales tradicionales.",
+type Pain = { figure: string; label: string };
+type ProblemCopy = {
+  eyebrow: string;
+  headingLead: string;
+  headingAccent: string;
+  intro: string;
+  pains: Pain[];
+  bridgeLead: string;
+  bridgeAccent: string;
+};
+
+const COPY: { es: ProblemCopy; en: ProblemCopy } = {
+  es: {
+    eyebrow: "El problema",
+    headingLead: "Resolver una disputa",
+    headingAccent: "no debería tomar años.",
+    intro:
+      "Hoy un conflicto comercial se arrastra entre instancias, audiencias que se aplazan y costos que crecen sin relación con lo que realmente está en juego. El proceso se vuelve el problema.",
+    pains: [
+      {
+        figure: "18 meses",
+        label:
+          "Tiempo promedio de un litigio comercial en tribunales tradicionales.",
+      },
+      {
+        figure: "70%",
+        label:
+          "De los costos de un conflicto son fricción operativa, no el fondo del caso.",
+      },
+      {
+        figure: "Opacidad",
+        label:
+          "Las partes pierden trazabilidad y control sobre su propio proceso.",
+      },
+    ],
+    bridgeLead: "REDEK convierte ese proceso en algo",
+    bridgeAccent: "medible, trazable y rápido.",
   },
-  {
-    figure: "70%",
-    label: "De los costos de un conflicto son fricción operativa, no el fondo del caso.",
+  en: {
+    eyebrow: "The problem",
+    headingLead: "Resolving a dispute",
+    headingAccent: "shouldn't take years.",
+    intro:
+      "Today a commercial dispute drags across instances, hearings that get postponed and costs that grow out of all proportion to what's actually at stake. The process itself becomes the problem.",
+    pains: [
+      {
+        figure: "18 months",
+        label:
+          "Average duration of commercial litigation in traditional courts.",
+      },
+      {
+        figure: "70%",
+        label:
+          "Of a dispute's costs are operational friction, not the merits of the case.",
+      },
+      {
+        figure: "Opacity",
+        label:
+          "The parties lose traceability and control over their own process.",
+      },
+    ],
+    bridgeLead: "REDEK turns that process into something",
+    bridgeAccent: "measurable, auditable and fast.",
   },
-  {
-    figure: "Opacidad",
-    label: "Las partes pierden trazabilidad y control sobre su propio proceso.",
-  },
-];
+};
 
 export default function Problem() {
   const reduce = useReducedMotion();
+  const t = useCopy(COPY);
 
   const fadeUp = {
     hidden: { y: reduce ? 0 : 24, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.55, ease: "easeOut" as const },
+      transition: { duration: 0.55, ease: EASE_OUT_EXPO },
     },
   };
 
@@ -43,35 +97,30 @@ export default function Problem() {
         >
           {/* Encabezado narrativo */}
           <motion.p variants={fadeUp} className="eyebrow">
-            El problema
+            {t.eyebrow}
           </motion.p>
 
-          <motion.h2
-            variants={fadeUp}
-            className="h-display mt-4 max-w-3xl text-4xl md:text-5xl lg:text-6xl"
-          >
-            Resolver una disputa{" "}
-            <span className="text-brand">no debería tomar años.</span>
+          <motion.h2 variants={fadeUp} className="display-2 mt-4 max-w-3xl">
+            {t.headingLead}{" "}
+            <span className="text-brand">{t.headingAccent}</span>
           </motion.h2>
 
           <motion.p
             variants={fadeUp}
             className="mt-6 max-w-2xl text-lg text-muted md:text-xl"
           >
-            Hoy un conflicto comercial se arrastra entre instancias, audiencias
-            que se aplazan y costos que crecen sin relación con lo que realmente
-            está en juego. El proceso se vuelve el problema.
+            {t.intro}
           </motion.p>
 
           {/* Grilla de dolor actual */}
           <div className="mt-16 grid gap-6 md:grid-cols-3">
-            {pains.map((p) => (
+            {t.pains.map((p) => (
               <motion.div
                 key={p.figure}
                 variants={fadeUp}
                 className="card flex flex-col p-8"
               >
-                <p className="numeral text-5xl font-bold text-brand md:text-6xl">
+                <p className="numeral text-5xl font-bold text-text md:text-6xl">
                   {p.figure}
                 </p>
                 <p className="mt-5 text-base leading-relaxed text-muted">
@@ -84,10 +133,10 @@ export default function Problem() {
           {/* Línea puente */}
           <motion.p
             variants={fadeUp}
-            className="h-display mt-16 max-w-3xl text-2xl text-text md:text-3xl"
+            className="display-3 mt-16 max-w-3xl text-text"
           >
-            REDEK convierte ese proceso en algo{" "}
-            <span className="text-brand">medible, trazable y rápido.</span>
+            {t.bridgeLead}{" "}
+            <span className="text-brand">{t.bridgeAccent}</span>
           </motion.p>
         </motion.div>
       </div>

@@ -1,13 +1,59 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE_OUT_EXPO, fadeUp } from "@/lib/motion";
+import { useCopy } from "@/i18n/locale";
 
-const fadeUp = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" as const } },
-};
+const COPY = {
+  es: {
+    eyebrow: "Contacto",
+    titleLead: "Hablemos de lo que",
+    titleAccent: "necesitas resolver.",
+    intro:
+      "Agenda una demo privada y descubre cómo REDEK puede transformar la gestión de disputas en tu organización.",
+    statValue: "14 días",
+    statLabel:
+      "Resolución promedio vs. 18 meses en tribunales tradicionales",
+    email: "info@redek.co",
+    site: "redek.co",
+    nameLabel: "Nombre",
+    namePlaceholder: "Tu nombre completo",
+    emailLabel: "Email corporativo",
+    emailPlaceholder: "tu@empresa.com",
+    phoneLabel: "Teléfono",
+    phonePlaceholder: "+57 300 000 0000",
+    challengeLabel: "¿Cuál es tu mayor desafío?",
+    challengePlaceholder:
+      "Ej: Necesitamos reducir los tiempos de resolución de disputas comerciales...",
+    submit: "Enviar Mensaje",
+  },
+  en: {
+    eyebrow: "Contact",
+    titleLead: "Let's talk about what you",
+    titleAccent: "need to resolve.",
+    intro:
+      "Book a private demo and discover how REDEK can transform dispute management across your organization.",
+    statValue: "14 days",
+    statLabel:
+      "Average resolution time vs. 18 months in traditional courts",
+    email: "info@redek.co",
+    site: "redek.co",
+    nameLabel: "Name",
+    namePlaceholder: "Your full name",
+    emailLabel: "Work email",
+    emailPlaceholder: "you@company.com",
+    phoneLabel: "Phone",
+    phonePlaceholder: "+57 300 000 0000",
+    challengeLabel: "What's your biggest challenge?",
+    challengePlaceholder:
+      "E.g. We need to cut resolution times for commercial disputes...",
+    submit: "Send Message",
+  },
+} as const;
 
 export default function Contact() {
+  const t = useCopy(COPY);
+
   return (
     <section id="contacto" className="divide-section bg-bg py-28 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -21,31 +67,25 @@ export default function Contact() {
           {/* Left */}
           <div>
             <motion.p variants={fadeUp} className="eyebrow mb-4">
-              Contacto
+              {t.eyebrow}
             </motion.p>
-            <motion.h2
-              variants={fadeUp}
-              className="h-display text-4xl md:text-5xl"
-            >
-              Hablemos de lo que{" "}
-              <span className="text-brand">necesitas resolver.</span>
+            <motion.h2 variants={fadeUp} className="display-2">
+              {t.titleLead}{" "}
+              <span className="text-brand">{t.titleAccent}</span>
             </motion.h2>
             <motion.p
               variants={fadeUp}
               className="mt-6 text-lg leading-relaxed text-muted"
             >
-              Agenda una demo privada y descubre cómo REDEK puede transformar la
-              gestión de disputas en tu organización.
+              {t.intro}
             </motion.p>
 
             {/* Impact stat */}
             <motion.div variants={fadeUp} className="card mt-10 p-6">
-              <p className="numeral text-3xl font-bold text-brand">
-                14 días
+              <p className="numeral text-3xl font-bold text-text">
+                {t.statValue}
               </p>
-              <p className="mt-1 text-sm text-muted">
-                Resolución promedio vs. 18 meses en tribunales tradicionales
-              </p>
+              <p className="mt-1 text-sm text-muted">{t.statLabel}</p>
             </motion.div>
 
             <motion.div variants={fadeUp} className="mt-8 flex flex-col gap-3">
@@ -53,7 +93,7 @@ export default function Contact() {
                 href="mailto:info@redek.co"
                 className="text-sm text-muted transition-colors hover:text-brand"
               >
-                info@redek.co
+                {t.email}
               </a>
               <a
                 href="https://redek.co"
@@ -61,7 +101,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="text-sm text-muted transition-colors hover:text-brand"
               >
-                redek.co
+                {t.site}
               </a>
             </motion.div>
           </div>
@@ -77,13 +117,13 @@ export default function Contact() {
                 htmlFor="contact-nombre"
                 className="mb-2 block text-xs font-medium uppercase tracking-wide text-muted"
               >
-                Nombre
+                {t.nameLabel}
               </label>
               <input
                 id="contact-nombre"
                 type="text"
                 required
-                placeholder="Tu nombre completo"
+                placeholder={t.namePlaceholder}
                 className="w-full border-b border-line bg-transparent py-3 text-text placeholder:text-muted/50 transition-colors focus:border-brand focus:outline-none"
               />
             </div>
@@ -92,13 +132,13 @@ export default function Contact() {
                 htmlFor="contact-email"
                 className="mb-2 block text-xs font-medium uppercase tracking-wide text-muted"
               >
-                Email corporativo
+                {t.emailLabel}
               </label>
               <input
                 id="contact-email"
                 type="email"
                 required
-                placeholder="tu@empresa.com"
+                placeholder={t.emailPlaceholder}
                 className="w-full border-b border-line bg-transparent py-3 text-text placeholder:text-muted/50 transition-colors focus:border-brand focus:outline-none"
               />
             </div>
@@ -107,12 +147,12 @@ export default function Contact() {
                 htmlFor="contact-telefono"
                 className="mb-2 block text-xs font-medium uppercase tracking-wide text-muted"
               >
-                Teléfono
+                {t.phoneLabel}
               </label>
               <input
                 id="contact-telefono"
                 type="tel"
-                placeholder="+57 300 000 0000"
+                placeholder={t.phonePlaceholder}
                 className="w-full border-b border-line bg-transparent py-3 text-text placeholder:text-muted/50 transition-colors focus:border-brand focus:outline-none"
               />
             </div>
@@ -121,22 +161,27 @@ export default function Contact() {
                 htmlFor="contact-desafio"
                 className="mb-2 block text-xs font-medium uppercase tracking-wide text-muted"
               >
-                ¿Cuál es tu mayor desafío?
+                {t.challengeLabel}
               </label>
               <textarea
                 id="contact-desafio"
                 rows={4}
                 required
-                placeholder="Ej: Necesitamos reducir los tiempos de resolución de disputas comerciales..."
+                placeholder={t.challengePlaceholder}
                 className="w-full resize-none border-b border-line bg-transparent py-3 text-text placeholder:text-muted/50 transition-colors focus:border-brand focus:outline-none"
               />
             </div>
-            <button type="submit" className="btn-primary group mt-4 self-start">
-              Enviar Mensaje
+            <motion.button
+              type="submit"
+              whileTap={{ scale: 0.97 }}
+              transition={{ ease: EASE_OUT_EXPO }}
+              className="btn-primary group mt-4 self-start"
+            >
+              {t.submit}
               <span className="transition-transform group-hover:translate-x-1">
                 &#8594;
               </span>
-            </button>
+            </motion.button>
           </motion.form>
         </motion.div>
       </div>
