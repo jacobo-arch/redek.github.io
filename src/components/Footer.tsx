@@ -69,24 +69,21 @@ export default function Footer() {
   const t = useCopy(COPY);
 
   return (
-    <footer className="bg-ink text-white py-16">
+    <footer className="bg-bg text-text py-16 border-t border-line">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Logo + tagline */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center mb-4">
               <Image
                 src="/redek-logo.png"
                 alt="REDEK"
-                width={36}
-                height={36}
-                className="h-9 w-9 object-contain"
+                width={120}
+                height={120}
+                className="h-20 w-auto object-contain"
               />
-              <span className="font-display text-xl font-semibold tracking-tight">
-                REDEK
-              </span>
             </div>
-            <p className="text-sm text-white/60 max-w-xs leading-relaxed">
+            <p className="text-sm text-muted max-w-xs leading-relaxed">
               {t.tagline}
             </p>
             {/* LinkedIn */}
@@ -94,7 +91,7 @@ export default function Footer() {
               href="https://www.linkedin.com/company/redek"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 text-sm text-white/60 hover:text-accent transition-colors"
+              className="inline-flex items-center gap-2 mt-4 text-sm text-muted hover:text-brand transition-colors"
             >
               <svg
                 className="w-4 h-4"
@@ -110,13 +107,13 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="eyebrow !text-accent mb-4">{t.navHeading}</h4>
+            <h4 className="eyebrow !text-text mb-4">{t.navHeading}</h4>
             <div className="flex flex-col gap-2.5">
               {t.navLinks.map((l) => (
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-sm text-white/60 hover:text-white transition-colors"
+                  className="text-sm text-muted hover:text-text transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -126,13 +123,13 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="eyebrow !text-accent mb-4">{t.legalHeading}</h4>
+            <h4 className="eyebrow !text-text mb-4">{t.legalHeading}</h4>
             <div className="flex flex-col gap-2.5">
               {t.legalLinks.map((l) => (
                 <Link
                   key={l.label}
                   href={l.href}
-                  className="text-sm text-white/60 hover:text-white transition-colors"
+                  className="text-sm text-muted hover:text-text transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -142,11 +139,11 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="eyebrow !text-accent mb-4">{t.contactHeading}</h4>
+            <h4 className="eyebrow !text-text mb-4">{t.contactHeading}</h4>
             <div className="flex flex-col gap-2.5">
               <a
                 href="mailto:info@redek.co"
-                className="text-sm text-white/60 hover:text-white transition-colors"
+                className="text-sm text-muted hover:text-text transition-colors"
               >
                 info@redek.co
               </a>
@@ -154,7 +151,7 @@ export default function Footer() {
                 href="https://redek.co"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-white/60 hover:text-white transition-colors"
+                className="text-sm text-muted hover:text-text transition-colors"
               >
                 redek.co
               </a>
@@ -163,11 +160,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/50">
+        <div className="mt-16 pt-8 border-t border-line flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-muted">
             &copy; {new Date().getFullYear()} REDEK. {t.rights}
           </p>
-          <p className="text-xs text-white/50">{t.descriptor}</p>
+          <p className="text-xs text-muted">{t.descriptor}</p>
         </div>
       </div>
     </footer>

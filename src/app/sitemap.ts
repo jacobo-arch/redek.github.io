@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 const SITE = "https://redek-web.vercel.app";
 const LASTMOD = "2026-05-29";
 

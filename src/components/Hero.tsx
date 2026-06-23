@@ -138,17 +138,7 @@ export default function Hero() {
             </a>
           </motion.div>
 
-          <motion.div
-            variants={fadeUp}
-            className="mt-12 flex items-center gap-6 text-sm text-muted"
-          >
-            <span className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              {t.trust1}
-            </span>
-            <span className="hidden h-4 w-px bg-line sm:block" />
-            <span className="hidden sm:inline">{t.trust2}</span>
-          </motion.div>
+
         </motion.div>
       </div>
 

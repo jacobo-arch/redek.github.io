@@ -33,7 +33,7 @@ const COPY: { es: TeamCopy; en: TeamCopy } = {
     team: [
       { name: "Nicolás Lozada", role: "Chief Executive Officer", initials: "NL", photo: "/team/nicolas-lozada.jpeg" },
       { name: "Shirlei Plaza", role: "Chief Administration Officer", initials: "SP", photo: "/team/shirlei-plaza.jpeg" },
-      { name: "Jacobo Gómez", role: "Head of R&D", initials: "JG", photo: "/team/jacobo-gomez.jpeg" },
+      { name: "Jacobo Gómez", role: "Head of R&D", initials: "JG", photo: "/team/jacobo-gomez.JPG" },
       { name: "Juan Camilo Girón", role: "Equipo REDEK", initials: "JC", photo: "/team/juan-camilo-giron.jpeg" },
     ],
     joinTitle: "Únete al equipo",
@@ -49,7 +49,7 @@ const COPY: { es: TeamCopy; en: TeamCopy } = {
     team: [
       { name: "Nicolás Lozada", role: "Chief Executive Officer", initials: "NL", photo: "/team/nicolas-lozada.jpeg" },
       { name: "Shirlei Plaza", role: "Chief Administration Officer", initials: "SP", photo: "/team/shirlei-plaza.jpeg" },
-      { name: "Jacobo Gómez", role: "Head of R&D", initials: "JG", photo: "/team/jacobo-gomez.jpeg" },
+      { name: "Jacobo Gómez", role: "Head of R&D", initials: "JG", photo: "/team/jacobo-gomez.JPG" },
       { name: "Juan Camilo Girón", role: "REDEK Team", initials: "JC", photo: "/team/juan-camilo-giron.jpeg" },
     ],
     joinTitle: "Join the team",

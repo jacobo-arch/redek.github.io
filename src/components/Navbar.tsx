@@ -67,18 +67,16 @@ export default function Navbar() {
       }`}
     >
       <ScrollProgress />
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2.5">
+      <div className="mx-auto flex h-24 max-w-6xl items-center justify-between px-6">
+        <Link href="/" className="flex items-center">
           <Image
             src="/redek-logo.png"
             alt="REDEK"
-            width={34}
-            height={34}
-            className="h-8 w-8 object-contain"
+            width={120}
+            height={120}
+            className="h-14 w-auto object-contain"
+            priority
           />
-          <span className="font-display text-lg font-bold tracking-tight text-text">
-            REDEK
-          </span>
         </Link>
 
         <div className="hidden items-center gap-7 lg:flex">
